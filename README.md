@@ -4,6 +4,29 @@ A complete college mini project: login/signup, a real database, recurring
 expenses, and CSV/PDF export. Built with Node.js, Express, MongoDB, and
 vanilla HTML/CSS/JS on the frontend (no framework needed).
 
+## 🌐 Live demo
+
+**https://expense-tracker-fullstack-1pyg.onrender.com**
+
+> Hosted free on Render. Since it's on the free tier, the app "sleeps" after
+> 15 minutes of no traffic — the first visit after a while may take 30–60
+> seconds to load while it wakes back up. This is normal and not a bug.
+
+## Deployment
+
+This project is deployed as a single Render Web Service:
+
+- **Database:** MongoDB Atlas (free M0 cluster)
+- **Backend + frontend hosting:** Render (free tier) — Express serves both
+  the API routes and the static frontend files from one service
+- **Root directory on Render:** `server`
+- **Build command:** `npm install`
+- **Start command:** `npm start`
+- **Environment variables set on Render:** `MONGODB_URI`, `JWT_SECRET`
+
+To redeploy after making changes, just push to the `main` branch on GitHub —
+Render is connected to auto-deploy on every push.
+
 ## Folder structure
 
 ```
