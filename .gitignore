@@ -1,4 +1,8 @@
 node_modules/
-   server/node_modules/
-   .env
-   server/.env
+server/node_modules/
+.env
+server/.env
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db

@@ -33,6 +33,22 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
     <span>Analytics</span>
   </div>
+
+  <div class="nav-section-label">Split with friends</div>
+  <div class="nav-item" data-view="friends">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14c2.8.4 5 2.6 5.5 6"/></svg>
+    <span>Friends</span>
+  </div>
+  <div class="nav-item" data-view="groups">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+    <span>Groups & Trips</span>
+  </div>
+  <div class="nav-item" data-view="balances">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    <span>Balances</span>
+  </div>
+
+  <div class="nav-section-label">Account</div>
   <div class="nav-item" data-view="settings">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
     <span>Settings</span>
@@ -61,19 +77,10 @@
   <!-- DASHBOARD -->
   <section class="view active" id="view-dashboard">
     <div class="page-header">
-      <div>
-        <h1>Dashboard</h1>
-        <p id="today-date"></p>
-      </div>
+      <div><h1>Dashboard</h1><p id="today-date"></p></div>
       <div class="header-actions">
-        <button class="btn-outline" onclick="exportCSV()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-          Export CSV
-        </button>
-        <button class="btn-outline" onclick="exportPDF()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-          Export PDF
-        </button>
+        <button class="btn-outline" onclick="exportCSV()">Export CSV</button>
+        <button class="btn-outline" onclick="exportPDF()">Export PDF</button>
       </div>
     </div>
 
@@ -110,10 +117,7 @@
 
   <!-- TRANSACTIONS -->
   <section class="view" id="view-transactions">
-    <div class="page-header">
-      <div><h1>Transactions</h1><p>Every expense you've logged</p></div>
-    </div>
-
+    <div class="page-header"><div><h1>Transactions</h1><p>Every expense you've logged</p></div></div>
     <div class="filter-row">
       <input type="text" id="search-input" placeholder="Search by description..." oninput="renderTransactions()">
       <select id="filter-category" onchange="renderTransactions()">
@@ -128,7 +132,6 @@
         <option value="lowest">Lowest amount</option>
       </select>
     </div>
-
     <div class="panel">
       <table>
         <thead><tr><th>Description</th><th>Category</th><th>Date</th><th style="text-align:right">Amount</th><th></th></tr></thead>
@@ -142,16 +145,14 @@
   <section class="view" id="view-recurring">
     <div class="page-header">
       <div><h1>Recurring expenses</h1><p>Bills and subscriptions that repeat automatically</p></div>
-      <div class="header-actions">
-        <button class="btn-outline" onclick="openModal(true)">+ Add recurring</button>
-      </div>
+      <div class="header-actions"><button class="btn-outline" onclick="openModal(true)">+ Add recurring</button></div>
     </div>
     <div class="panel">
       <table>
         <thead><tr><th>Description</th><th>Category</th><th>Frequency</th><th style="text-align:right">Amount</th><th></th></tr></thead>
         <tbody id="recurring-body"></tbody>
       </table>
-      <div class="empty-state" id="recurring-empty" style="display:none;">No recurring expenses set up. Add rent, subscriptions, or bills here so they log automatically.</div>
+      <div class="empty-state" id="recurring-empty" style="display:none;">No recurring expenses set up.</div>
     </div>
   </section>
 
@@ -168,15 +169,71 @@
     </div>
   </section>
 
+  <!-- FRIENDS -->
+  <section class="view" id="view-friends">
+    <div class="page-header">
+      <div><h1>Friends</h1><p>People you share expenses with</p></div>
+      <div class="header-actions"><button class="btn-outline" onclick="openAddFriendModal()">+ Add friend</button></div>
+    </div>
+    <div class="panel">
+      <div class="friend-list" id="friends-list"></div>
+      <div class="empty-state" id="friends-empty" style="display:none;">No friends added yet. Add a friend by their email — they need an account on this app too.</div>
+    </div>
+  </section>
+
+  <!-- GROUPS -->
+  <section class="view" id="view-groups">
+    <div id="groups-list-view">
+      <div class="page-header">
+        <div><h1>Groups & trips</h1><p>Split expenses with a group of friends</p></div>
+        <div class="header-actions"><button class="btn-outline" onclick="openCreateGroupModal()">+ New group</button></div>
+      </div>
+      <div class="group-grid" id="groups-grid"></div>
+      <div class="empty-state" id="groups-empty" style="display:none;">No groups yet. Create one for a trip or shared expense.</div>
+    </div>
+
+    <div id="group-detail-view" style="display:none;">
+      <span class="back-link" onclick="backToGroups()">← Back to groups</span>
+      <div class="page-header">
+        <div><h1 id="gd-name">Group</h1><p id="gd-members"></p></div>
+        <div class="header-actions"><button class="btn-outline" onclick="openAddGroupExpenseModal()">+ Add expense</button></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Expenses in this group</h2></div>
+        <div id="gd-expenses-list"></div>
+        <div class="empty-state" id="gd-expenses-empty" style="display:none;">No expenses added to this group yet.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BALANCES -->
+  <section class="view" id="view-balances">
+    <div class="page-header"><div><h1>Balances</h1><p>Who owes whom, across all your groups</p></div></div>
+
+    <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="stat-card positive"><div class="label">You are owed</div><div class="value num" id="bal-owed-to-you">₹0</div></div>
+      <div class="stat-card negative"><div class="label">You owe</div><div class="value num" id="bal-you-owe">₹0</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Outstanding with friends</h2></div>
+      <div id="balances-list"></div>
+      <div class="empty-state" id="balances-empty" style="display:none;">You're all settled up — no outstanding balances.</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Settlement history</h2></div>
+      <div id="settlements-list"></div>
+      <div class="empty-state" id="settlements-empty" style="display:none;">No payments recorded yet.</div>
+    </div>
+  </section>
+
   <!-- SETTINGS -->
   <section class="view" id="view-settings">
     <div class="page-header"><div><h1>Settings</h1><p>Manage your budget and account</p></div></div>
     <div class="panel" style="max-width:420px; margin-bottom:16px;">
       <div class="panel-head"><h2>Monthly budget</h2></div>
-      <div class="field">
-        <label for="budget-input">Set your budget (₹)</label>
-        <input type="number" id="budget-input">
-      </div>
+      <div class="field"><label for="budget-input">Set your budget (₹)</label><input type="number" id="budget-input"></div>
       <button class="btn btn-primary btn-full" onclick="saveBudget()">Save budget</button>
     </div>
     <div class="panel" style="max-width:420px;">
@@ -189,18 +246,12 @@
 </main>
 </div>
 
-<!-- MODAL -->
+<!-- ADD PERSONAL EXPENSE MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <h2 id="modal-title">Add expense</h2>
-    <div class="field">
-      <label for="m-desc">Description</label>
-      <input type="text" id="m-desc" placeholder="e.g. Groceries at Reliance Fresh">
-    </div>
-    <div class="field">
-      <label for="m-amount">Amount (₹)</label>
-      <input type="number" id="m-amount" placeholder="0">
-    </div>
+    <div class="field"><label for="m-desc">Description</label><input type="text" id="m-desc" placeholder="e.g. Groceries at Reliance Fresh"></div>
+    <div class="field"><label for="m-amount">Amount (₹)</label><input type="number" id="m-amount" placeholder="0"></div>
     <div class="field">
       <label for="m-category">Category</label>
       <select id="m-category">
@@ -208,20 +259,88 @@
         <option>Bills</option><option>Health</option><option>Other</option>
       </select>
     </div>
-    <div class="checkbox-row">
-      <input type="checkbox" id="m-recurring" onchange="toggleFrequencyField()">
-      <label for="m-recurring">This is a recurring expense</label>
-    </div>
+    <div class="checkbox-row"><input type="checkbox" id="m-recurring" onchange="toggleFrequencyField()"><label for="m-recurring">This is a recurring expense</label></div>
     <div class="field" id="frequency-field" style="display:none;">
       <label for="m-frequency">Repeats</label>
-      <select id="m-frequency">
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-      </select>
+      <select id="m-frequency"><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
       <button class="btn btn-primary" onclick="addExpense()">Add expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD FRIEND MODAL -->
+<div class="overlay" id="friend-overlay">
+  <div class="modal">
+    <h2>Add a friend</h2>
+    <p style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">They need to already have an Expensely account with this email.</p>
+    <div class="field"><label for="friend-email">Friend's email</label><input type="email" id="friend-email" placeholder="friend@example.com"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeFriendModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addFriend()">Add friend</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE GROUP MODAL -->
+<div class="overlay" id="group-overlay">
+  <div class="modal">
+    <h2>Create a group</h2>
+    <div class="field"><label for="group-name">Group name</label><input type="text" id="group-name" placeholder="e.g. Goa Trip 2026"></div>
+    <div class="field">
+      <label>Add friends to this group</label>
+      <div id="group-friend-checklist" style="max-height:200px; overflow-y:auto;"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeGroupModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="createGroup()">Create group</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD GROUP EXPENSE MODAL -->
+<div class="overlay" id="group-expense-overlay">
+  <div class="modal">
+    <h2>Add a group expense</h2>
+    <div class="field"><label for="ge-desc">Description</label><input type="text" id="ge-desc" placeholder="e.g. Hotel booking"></div>
+    <div class="field"><label for="ge-amount">Total amount (₹)</label><input type="number" id="ge-amount" placeholder="0" oninput="refreshSplitInputs()"></div>
+    <div class="field">
+      <label for="ge-paidby">Paid by</label>
+      <select id="ge-paidby"></select>
+    </div>
+    <div class="field">
+      <label>Split type</label>
+      <select id="ge-split-type" onchange="toggleSplitType()">
+        <option value="equal">Split equally</option>
+        <option value="custom">Custom amounts</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Split between</label>
+      <div id="ge-split-list"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeGroupExpenseModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addGroupExpense()">Add expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTLE UP MODAL -->
+<div class="overlay" id="settle-overlay">
+  <div class="modal">
+    <h2>Settle up</h2>
+    <div class="field">
+      <label for="settle-friend">Pay</label>
+      <select id="settle-friend"></select>
+    </div>
+    <div class="field"><label for="settle-amount">Amount (₹)</label><input type="number" id="settle-amount" placeholder="0"></div>
+    <div class="field"><label for="settle-note">Note (optional)</label><input type="text" id="settle-note" placeholder="e.g. Paid via UPI"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeSettleModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="recordSettlement()">Record payment</button>
     </div>
   </div>
 </div>

@@ -20,7 +20,11 @@ const userSchema = new mongoose.Schema({
   monthlyBudget: {
     type: Number,
     default: 20000
-  }
+  },
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,135 +1,111 @@
-# Expensely — Full-stack expense tracker
+# Expensely — Full-stack expense tracker with bill splitting
 
-A complete college mini project: login/signup, a real database, recurring
-expenses, and CSV/PDF export. Built with Node.js, Express, MongoDB, and
-vanilla HTML/CSS/JS on the frontend (no framework needed).
+A college mini project: personal expense tracking (login, recurring bills,
+CSV/PDF export, analytics) PLUS Splitwise-style bill splitting between
+friends — add friends, create trip/group expenses, split them equally or by
+custom amount, and track who owes whom.
 
 ## 🌐 Live demo
 
 **https://expense-tracker-fullstack-1pyg.onrender.com**
 
-> Hosted free on Render. Since it's on the free tier, the app "sleeps" after
-> 15 minutes of no traffic — the first visit after a while may take 30–60
-> seconds to load while it wakes back up. This is normal and not a bug.
+> Free-tier hosting — the app "sleeps" after 15 minutes of no traffic, so
+> the first visit after a while may take 30–60 seconds to wake up.
 
-## Deployment
+## What's new: bill splitting
 
-This project is deployed as a single Render Web Service:
+**Honest scope note:** this does NOT connect to real bank accounts or
+auto-detect payments — that needs paid banking APIs (Plaid etc.) which is
+outside what's realistic for a free student project, and it's also not how
+the real Splitwise app works either. Instead:
 
-- **Database:** MongoDB Atlas (free M0 cluster)
-- **Backend + frontend hosting:** Render (free tier) — Express serves both
-  the API routes and the static frontend files from one service
-- **Root directory on Render:** `server`
-- **Build command:** `npm install`
-- **Start command:** `npm start`
-- **Environment variables set on Render:** `MONGODB_URI`, `JWT_SECRET`
+1. **Friends** — add another registered user as a friend by their email
+2. **Groups & trips** — create a group (e.g. "Goa Trip 2026"), add friends to it
+3. **Add a group expense** — e.g. "Hotel — ₹6000, paid by Riya, split equally
+   between 4 people" (or enter custom amounts per person instead of equal)
+4. **Balances** — the app calculates, across every group you're in, a single
+   net balance per friend: how much they owe you, or you owe them
+5. **Settle up** — when someone actually pays back (cash, UPI, whatever),
+   you record it in the app, which updates the balance
 
-To redeploy after making changes, just push to the `main` branch on GitHub —
-Render is connected to auto-deploy on every push.
+This mirrors exactly how Splitwise's core free functionality works.
 
 ## Folder structure
 
 ```
 expense-tracker-fullstack/
-├── server/                  Backend (Node.js + Express + MongoDB)
-│   ├── config/db.js         Database connection
-│   ├── models/User.js       User schema
-│   ├── models/Expense.js    Expense schema (supports recurring expenses)
-│   ├── middleware/auth.js   JWT authentication check
-│   ├── routes/authRoutes.js Register / login endpoints
-│   ├── routes/expenseRoutes.js  Expense CRUD + budget endpoints
-│   ├── server.js            App entry point
-│   ├── package.json
-│   └── .env.example         Copy this to .env and fill in your values
-│
-└── public/                  Frontend (plain HTML/CSS/JS)
-    ├── login.html
-    ├── register.html
-    ├── dashboard.html
+├── server/
+│   ├── models/
+│   │   ├── User.js          includes a `friends` list
+│   │   ├── Expense.js       personal expenses
+│   │   ├── Group.js         a trip/group of friends
+│   │   ├── GroupExpense.js  a split expense within a group
+│   │   └── Settlement.js    a recorded real-world payment
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── expenseRoutes.js
+│   │   ├── friendRoutes.js      add/remove/list friends
+│   │   ├── groupRoutes.js       create/list/view groups
+│   │   ├── groupExpenseRoutes.js  add a split expense
+│   │   └── balanceRoutes.js     calculates balances + settle up
+│   ├── middleware/auth.js
+│   ├── config/db.js
+│   ├── server.js
+│   └── .env.example
+└── public/
+    ├── login.html / register.html / dashboard.html
     ├── css/style.css
-    └── js/
-        ├── api.js           Shared fetch helper
-        ├── auth.js           Login/register logic
-        └── dashboard.js      Main app logic, charts, exports
+    └── js/ (api.js, auth.js, dashboard.js)
 ```
 
-## Features
+## How the balance math works
 
-- Email/password signup and login (passwords hashed with bcrypt, sessions via JWT)
-- Each user's expenses are private to their account, stored in MongoDB
-- Dashboard with stat cards, spending trend chart, and category breakdown
-- Full transactions page with search, filter, and sort
-- **Recurring expenses** — mark a bill/subscription as recurring (weekly or
-  monthly) and it automatically re-appears as a new transaction each time
-  it's due, calculated server-side
-- **Export to CSV** and **export to PDF** from the dashboard
-- Per-user monthly budget you can edit in Settings
-- Responsive layout — sidebar collapses to icons on mobile
+Every group expense has a `paidBy` person and a list of `splits` (who owes
+how much toward it). The `/api/balances` route walks every expense across
+every group you're in, builds a simple debt ledger between every pair of
+people, nets it all down to one number per friend, and subtracts any
+settlements you've already recorded. That's the entire algorithm — no
+external library needed.
 
 ## Setup instructions
 
-### 1. Install Node.js
-Download from [nodejs.org](https://nodejs.org) (LTS version) if you don't have it.
+1. Install [Node.js](https://nodejs.org) if you don't have it
+2. Get a MongoDB connection string — MongoDB Atlas (free, cloud) or your
+   own local MongoDB
+3. In `server/`:
+   ```
+   npm install
+   cp .env.example .env
+   ```
+   Fill in `MONGODB_URI` and set `JWT_SECRET` to any random string
+4. Run it:
+   ```
+   npm start
+   ```
+5. Open `http://localhost:5000`
 
-### 2. Get a MongoDB database
-Easiest option — MongoDB Atlas (free, cloud-hosted, no installation):
-1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and create a free account
-2. Create a free cluster (M0 tier)
-3. Under "Database Access", create a database user with a password
-4. Under "Network Access", allow access from anywhere (0.0.0.0/0) for development
-5. Click "Connect" → "Drivers" and copy your connection string — it looks like:
-   `mongodb+srv://username:password@cluster.mongodb.net/expense-tracker`
+## Trying the split-expense feature locally
 
-Alternative — install MongoDB locally from [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
-and use `mongodb://127.0.0.1:27017/expense-tracker` instead.
+Since splitting requires two accounts, the easiest way to test it yourself:
+1. Sign up as yourself (e.g. your real email)
+2. Open an incognito/private browser window, sign up again with a second
+   email (e.g. a throwaway test one) — this is your "friend" account
+3. In your main account, go to **Friends** → add the test account's email
+4. Go to **Groups & trips** → create a group → add that friend
+5. Add a group expense and check **Balances**
 
-### 3. Configure the backend
-```bash
-cd server
-npm install
-cp .env.example .env
-```
-Open `.env` and paste in your MongoDB connection string, and set `JWT_SECRET`
-to any long random string (this signs login sessions).
+## Deployment
 
-### 4. Run the server
-```bash
-npm start
-```
-You should see `MongoDB connected` and `Server running on http://localhost:5000`
-in the terminal.
-
-### 5. Open the app
-Go to **http://localhost:5000** in your browser. The backend also serves the
-frontend files, so you don't need a separate server for `public/`.
-
-1. Click "Sign up" and create an account
-2. You'll land on the dashboard — add an expense to see it flow through
-3. Try marking one as "recurring" and check the Recurring tab
-4. Try Export CSV / Export PDF from the dashboard
+Deployed on Render (free tier), connected to auto-deploy from GitHub's
+`main` branch, with MongoDB Atlas as the database. Push to `main` and
+Render redeploys automatically.
 
 ## For your report
 
-**Tech stack:**
-- Frontend: HTML, CSS, JavaScript, Chart.js (charts), jsPDF (PDF export)
-- Backend: Node.js, Express.js
-- Database: MongoDB (via Mongoose ODM)
-- Authentication: bcrypt (password hashing) + JWT (session tokens)
-
-**Database design (2 collections):**
-- `users`: name, email, hashed password, monthlyBudget
-- `expenses`: linked to a user, description, amount, category, date,
-  isRecurring flag, frequency, nextDueDate
-
-**Architecture:** This follows a standard 3-tier structure — frontend
-(public/), backend/API layer (server/routes, server/middleware), and
-data layer (server/models + MongoDB). Good talking point for your viva.
-
-## Troubleshooting
-
-- **"MongoDB connection failed"** — double check your `MONGODB_URI` in `.env`,
-  and make sure your Atlas cluster's Network Access allows your IP.
-- **Blank page / can't reach localhost:5000** — make sure `npm start` is
-  still running in your terminal.
-- **"Invalid email or password"** on first try — make sure you signed up
-  first via the Sign up page before trying to log in.
+**New additions over the base expense tracker:**
+- Two-way friend relationships (stored as a `friends` array on the User model)
+- Many-to-many group membership (a Group references multiple Users)
+- A split-expense ledger that supports both equal and custom splitting
+- A debt-netting algorithm that collapses many small debts into one net
+  balance per friend
+- A settlement log, separate from expenses, to record real-world repayments

@@ -13,8 +13,7 @@ function computeNextDueDate(fromDate, frequency) {
   return d;
 }
 
-// GET /api/expenses - list all expenses for the logged-in user
-// Also auto-generates any recurring expenses that are due
+// GET /api/expenses - list personal expenses, auto-generating due recurring ones
 router.get('/', async (req, res) => {
   try {
     const recurring = await Expense.find({ user: req.userId, isRecurring: true });
@@ -42,7 +41,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/expenses - create a new expense (or recurring template)
+// POST /api/expenses - create a personal expense (or recurring template)
 router.post('/', async (req, res) => {
   try {
     const { desc, amount, category, date, isRecurring, frequency } = req.body;
@@ -81,7 +80,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// PUT /api/expenses/budget - update the user's monthly budget
+// PUT /api/expenses/budget
 router.put('/budget', async (req, res) => {
   try {
     const { monthlyBudget } = req.body;

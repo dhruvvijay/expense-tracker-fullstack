@@ -47,7 +47,6 @@ async function handleRegister() {
   }
 }
 
-// If already logged in, skip straight to the dashboard
 if (getToken() && (window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('register.html'))) {
   window.location.href = 'dashboard.html';
 }

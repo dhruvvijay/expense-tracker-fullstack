@@ -1,7 +1,7 @@
 {
   "name": "expense-tracker-server",
-  "version": "1.0.0",
-  "description": "Backend API for the Expense Tracker mini project",
+  "version": "2.0.0",
+  "description": "Backend API for the Expense Tracker mini project, with Splitwise-style bill splitting",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,8 +13,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.0",
-    "node-cron": "^3.0.3"
+    "mongoose": "^8.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
